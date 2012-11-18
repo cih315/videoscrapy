@@ -19,3 +19,24 @@ class MicroMovie(models.Model):
     def __unicode__(self):
         return self.name
 
+class AreaDic(models.Model):
+    areaName = models.CharField(max_length=32,db_column='area_name')
+    class Meta:
+        db_table = 'area_dic'
+    
+class SeriesInfo(models.Model):
+    area_id = models.IntegerField() 
+    sec_classify = models.CharField(max_length=32) 
+    top_classify_id = models.IntegerField() 
+    name = models.CharField(max_length=32)
+    introduction = models.CharField(max_length=1024)
+    director = models.CharField(max_length=255)
+    actors = models.CharField(max_length=255)
+    publish_time = models.CharField(max_length=32)
+    thumbnail = models.CharField(max_length=128)
+    score = models.IntegerField(default=0) 
+    view_cnt = models.IntegerField(default=0) 
+    sort_index = models.IntegerField(default=0) 
+    
+    class Meta:
+        db_table = 'series_info'
