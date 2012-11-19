@@ -3,8 +3,7 @@
 # See documentation in:
 # http://doc.scrapy.org/topics/items.html
 import os
-from scrapy.item import Item, Field
-from scrapy.contrib.djangoitem import DjangoItem
+from scrapy.contrib.djangoitem import DjangoItem, Field
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'videosite.settings'
 
@@ -14,13 +13,23 @@ except ImportError:
     django = None
 
 if django:
-    from video.models import Movie,MicroMovie
+    from video.models import SeriesInfo 
 else:
     Movie = None
 
 
-class VideoscrapyItem(DjangoItem):
-    django_model = Movie
+class BaseVideoItem(DjangoItem):
+    django_model = SeriesInfo 
     
-class MircoMovieItem(DjangoItem):
-    django_model = MicroMovie
+class VideoItem(BaseVideoItem):
+    area_name = Field() 
+    top_classify_name = Field() 
+    video_name = Field() 
+    video_introduction = Field() 
+    video_thumbnail = Field() 
+    video_url = Field() 
+    video_website = Field() 
+    video_view_cnt = Field() 
+
+    
+    

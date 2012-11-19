@@ -20,23 +20,69 @@ class MicroMovie(models.Model):
         return self.name
 
 class AreaDic(models.Model):
-    areaName = models.CharField(max_length=32,db_column='area_name')
+    area_name = models.CharField(max_length=32)
+
     class Meta:
         db_table = 'area_dic'
     
+class TopClassify(models.Model):  
+    name = models.CharField(max_length=64)
+    spider_name = models.CharField(max_length=64)
+    area_serarch = models.IntegerField(default=0)
+    time_serarch = models.IntegerField(default=0)
+    sec_claaify_serarch = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = 'top_classify'
+
+class SecondClassify(models.Model):
+    name = models.CharField(max_length=64)
+
+    class Meta:
+        db_table = 'second_classify'
+
+class Classify(models.Model):
+    top_classify = models.ForeignKey(TopClassify)
+    sec_classify = models.ForeignKey(SecondClassify)
+
+    class Meta:
+        db_table = 'classify'
+
 class SeriesInfo(models.Model):
-    area_id = models.IntegerField() 
-    sec_classify = models.CharField(max_length=32) 
-    top_classify_id = models.IntegerField() 
-    name = models.CharField(max_length=32)
-    introduction = models.CharField(max_length=1024)
-    director = models.CharField(max_length=255)
-    actors = models.CharField(max_length=255)
-    publish_time = models.CharField(max_length=32)
+    area = models.ForeignKey(AreaDic)
+    top_classify = models.ForeignKey(TopClassify)
+    sec_classify = models.CharField(max_length=32)
+    name = models.CharField(max_length=64)
+    introduction = models.CharField(max_length=2048,null=True)
+    director = models.CharField(max_length=255,null=True)
+    actors = models.CharField(max_length=255,null=True)
+    publish_time = models.CharField(max_length=32,null=True)
     thumbnail = models.CharField(max_length=128)
-    score = models.IntegerField(default=0) 
-    view_cnt = models.IntegerField(default=0) 
-    sort_index = models.IntegerField(default=0) 
-    
+    score = models.IntegerField(default=0)
+    view_cnt = models.IntegerField(default=0)
+    sort_index = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return seft.sec_classify   
+
     class Meta:
         db_table = 'series_info'
+
+class VideoInfo(models.Model):
+    series = models.ForeignKey(SeriesInfo)
+    name = models.CharField(max_length=64)
+    introduction = models.CharField(max_length=2048,null=True)
+    thumbnail = models.CharField(max_length=128)
+    url = models.CharField(max_length=128)
+    website = models.CharField(max_length=64)
+    view_cnt = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = 'video_info'
+
+class VideoType(models.Model):
+    series = models.ForeignKey(SeriesInfo)
+    sec_classify = models.ForeignKey(SecondClassify)
+
+    class Meta:
+        db_table = 'video_type'

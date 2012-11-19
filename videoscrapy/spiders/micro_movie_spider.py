@@ -2,7 +2,7 @@
 from scrapy.selector import HtmlXPathSelector
 from scrapy.spider import BaseSpider
 from scrapy.http import Request
-from videoscrapy.items import MircoMovieItem 
+from videoscrapy.items import VideoItem 
 
 
 class MySpider(BaseSpider):
@@ -27,7 +27,7 @@ class MySpider(BaseSpider):
             vurl = site.select("div[@class='txt']/h6[@class='caption']/a/@href").extract()[0]
             vcount = site.select("div[@class='txt']/ul[@class='info']/li[@class='d_nums']/span[@class='d_play']/text()").extract()[0]
             vpic = site.select("div[@class='pic']/div[@class='inner']/img/@src").extract()[0]
-            yield MircoMovieItem(name=vname,cate=vcate,count=vcount,pic=vpic,url=vurl)
+            yield VideoItem(name=vname,video_name=vname,sec_classify=vcate,view_cnt=vcount,thumbnail=vpic,video_url=vurl,area_name='',introduction='',video_introduction='',video_thumbnail=vpic,video_view_cnt=vcount,director='',actors='',publish_time='',score=0)
 
         for url in hxs.select("//div[@class='page-nav']/div[@class='page-nav-bar']/a[@class='page-nav-next']/@href").extract():
             yield Request('http://www.tudou.com/cate/'+url, callback=self.parse)
