@@ -12,22 +12,12 @@ class VideoscrapyPipeline(object):
 class MoviePipeline(object):
 
     def __init__(self):
-	#print('this is init==========>')
-        #MicroMovie.objects.all().delete()
         self.sec_classify_list = SecondClassify.objects.all()    
         self.top_classify_list = TopClassify.objects.all()    
         self.area_list = AreaDic.objects.all()    
         self.sort_index = 0    
 
     def process_item(self, item, spider):
-        #if spider.name == 'micromovie':
-            #movie = Movie(name=name,url=item['url'], pic =item['pic'],description=item['description'])
-            #micromovie = MicroMovie(name=item['name'],url=item['url'], pic =item['pic'],count=item['count'],desc='',cate=item['cate'])
-            #micromovie.save()
-        #print(item['sec_classify'].encode('utf-8'))
-        #if item['sec_classify'].encode('utf-8') in self.sec_classify_list:
-        #    print(item['sec_classify'].encode('utf-8'))
-        #print(self.sec_classify_list.count())
         self.sort_index = self.sort_index + 1;
         sec_classify = self.sec_classify_list.get(name=item['sec_classify'])
         area = self.area_list.get(pk=1) 
