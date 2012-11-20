@@ -38,8 +38,8 @@ class MySpider(BaseSpider):
             item['director'] = '' 
             item['actors'] = '' 
             item['score'] = 0  
-            item['publish_time'] = '' 
-            #item['publish_time'] = site.select("div[@class='txt']/ul[@class='info']/li[2]/text()").extract()[0]
+            #item['publish_time'] = '' 
+            item['publish_time'] = site.select("div[@class='txt']/ul[@class='info']/li[2]/text()").extract()[0]
             
             yield item
 
