@@ -21,7 +21,7 @@ class MySpider(CrawlSpider):
         self.log('Hi, this is an item page! %s' % response.url)
         hxs = HtmlXPathSelector(response)
         sites = hxs.select("//div[@class='bd']/div[@class='content clearfix']/div[@class='video-list gclearfix']/dl[@class='section']")
-        cate = hxs.select("//div[@id='screening']/div[2][@class='screening-bd']/ul[@class='kinds gclearfix']/li/a[@class='on']/text()").extract()[0]
+        cate = hxs.select("//div[@class='bd']/div[@class='content clearfix']/div[@id='screening']/div[2][@class='screening-bd']/ul[@class='kinds gclearfix']/li/a/text()").extract()[0]
         items = []
         for site in sites:
             item = VideoItem()
@@ -33,11 +33,6 @@ class MySpider(CrawlSpider):
             request = Request(detail_url,callback=self.parse_detail)
             request.meta['item'] = item
             items.append(request)
-
-        link = hxs.select("//div[@id='gpage']/a[@class='page-next']/@href").extract()
-        if len(link):
-            items.append(Request(link[0],callback=self.parse_item))
-
         return items
 
     def parse_detail(self,response):
@@ -50,9 +45,9 @@ class MySpider(CrawlSpider):
         item['video_thumbnail'] = site.select("dd[@class='v-poster']/a[@class='play_btn']/img/@src").extract() 
         item['thumbnail'] = item['video_thumbnail'] 
         item['publish_time'] = site.select("dd[@class='v-main-info clearfix']/p[@class='date']/a/text()").extract()        
-        item['director'] = " ".join(site.select("dd[@class='v-main-info clearfix']/p[@class='info']/a/text()").extract()) 
-        actors_list = site.select("dd[@class='v-main-info clearfix']/p[@class='starring']/a/text()").extract() 
-        item['actors'] = " ".join(actors_list) 
+        item['director'] = site.select("dd[@class='v-main-info clearfix']/p[@class='info']/a/text()").extract() 
+        item['actors'] = site.select("dd[@class='v-main-info clearfix']/p[@class='starring']/a/text()").extract() 
         item['area'] = site.select("dd[@class='v-other-info']/p[2][@class='item']/text()").extract() 
         item['video_view_cnt'] = 0 
         return item 
+

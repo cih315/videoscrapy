@@ -24,6 +24,7 @@ class BaseVideoItem(DjangoItem):
 class VideoItem(BaseVideoItem):
     area_name = Field() 
     top_classify_name = Field() 
+    sec_classify_name = Field() 
     video_name = Field() 
     video_introduction = Field() 
     video_thumbnail = Field() 
