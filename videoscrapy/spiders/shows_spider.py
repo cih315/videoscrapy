@@ -39,19 +39,18 @@ class TvSpider(CrawlSpider):
     def parse_detail(self,response):
         hxs = HtmlXPathSelector(response)
         item = response.meta['item']
-        site = hxs.select("//div[@id]")
+        site = hxs.select("//div[@id='bd']")
         video_list = site.select("dd[@id='tv-play']/div[@class='box']/div[1][@class='content']/div[@class='full clearfix']")
         item['video_url'] = video_list.select("a/@href").extract() 
         item['video_name'] = video_list.select("a/text()").extract() 
         item['video_introduction'] =  video_list.select("a/text()").extract() 
         item['introduction'] = site.select("div[@class='span17']/div[@id='info']/div[2][@class='info-bd']/div[@class='intro gclearfix']/p[@id='part-intro']/text()").extract() 
         item['video_thumbnail'] = site.select("dd[@class='v-poster']/a[@class='play_btn']/img/@src").extract() 
-        item['thumbnail'] = site.select("div[@id='left_info']/div[@id=poster]/a[@class='play_btn'/img/@href]").extract() 
-        item['publish_time'] = site.select("dd[@class='v-other-info']/p[5][@class='item']/text()").extract()        
-        item['director'] = " ".join(site.select("dd[@class='v-other-info']/p[2][@class='item']/text()").extract()) 
-        actors_list = site.select("dd[@class='v-main-info clearfix']/p[@class='starring']/a/text()").extract() 
-        item['actors'] = " ".join(actors_list) 
-        item['area'] = site.select("dd[@class='v-other-info']/p[3][@class='item']/text()").extract() 
-        item['sec_classify_name'] = "".join(site.select("dd[@class='v-other-info']/p[4][@class='item']/text()").extract()) 
+        item['thumbnail'] = site.select("div[@id='left_info']/div[@id='poster']/a[@class='play_btn']/img/@src").extract() 
+        item['publish_time'] = ""        
+        item['director'] = " ".join(site.select("div[@id='left_info']/div[@id='otherinfo']/p[2]/span[@class='text']/text()").extract()) 
+        item['actors'] = "" 
+        item['area'] = site.select("div[@id='left_info']/div[@id='otherinfo']/p[4]/span[@class='text']/text()").extract() 
+        item['sec_classify_name'] = "".join(site.select("div[@id='left_info']/div[@id='otherinfo']/p[3]/span[@class='text']/text()").extract()) 
         item['video_view_cnt'] = 0 
         return item 
