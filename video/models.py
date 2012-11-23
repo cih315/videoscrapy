@@ -1,23 +1,6 @@
 from django.db import models
 
 # Create your models here.
-class Movie(models.Model):
-    name = models.CharField(max_length=1000)
-    url = models.CharField(max_length=200)
-    pic = models.CharField(max_length=500)
-    description = models.CharField(max_length=5000)
-    def __unicode__(self):
-        return self.name
-
-class MicroMovie(models.Model):
-    name = models.CharField(max_length=255)
-    url = models.CharField(max_length=255)
-    pic = models.CharField(max_length=255)
-    desc = models.CharField(max_length=255)
-    cate = models.CharField(max_length=255)
-    count = models.IntegerField(default=0)
-    def __unicode__(self):
-        return self.name
 
 class AreaDic(models.Model):
     area_name = models.CharField(max_length=32)
@@ -58,8 +41,8 @@ class SeriesInfo(models.Model):
     actors = models.CharField(max_length=255,null=True)
     publish_time = models.CharField(max_length=32,null=True)
     thumbnail = models.CharField(max_length=128)
-    score = models.IntegerField(default=0)
-    view_cnt = models.IntegerField(default=0)
+    score = models.CharField(max_length=32,null=True) 
+    view_cnt = models.CharField(max_length=32,null=True) 
     sort_index = models.IntegerField(default=0)
 
     def __unicode__(self):

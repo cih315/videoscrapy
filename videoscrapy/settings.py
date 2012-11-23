@@ -12,7 +12,7 @@ SPIDER_MODULES = ['videoscrapy.spiders']
 NEWSPIDER_MODULE = 'videoscrapy.spiders'
 
 ITEM_PIPELINES = [
-    #'videoscrapy.pipelines.MoviePipeline',
+    'videoscrapy.pipelines.MoviePipeline',
 ]
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent

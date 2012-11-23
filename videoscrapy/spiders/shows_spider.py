@@ -4,7 +4,7 @@ from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.selector import HtmlXPathSelector
 from videoscrapy.items import VideoItem
 
-class TvSpider(CrawlSpider):
+class Spider(CrawlSpider):
     name = 'shows'
     allowed_domains = ['v.360.cn']
     start_urls = ['http://v.360.cn']
@@ -17,14 +17,12 @@ class TvSpider(CrawlSpider):
         self.log('Hi, this is an item page! %s' % response.url)
         hxs = HtmlXPathSelector(response)
         sites = hxs.select("//div[@id='bd']//div[@class='content gclearfix']/div[@class='video-list gclearfix']/dl[@class='section variety']")
-        cate = "" 
         items = []
         for site in sites:
             item = VideoItem()
             item['name'] = site.select("dt[@class='video-title']/a/text()").extract()
             item['sort_index'] = site.select("dt[@class='video-title']/em/text()").extract()[0].replace('.','').strip()
             item['score'] = 0 
-            item['sec_classify'] = cate 
             detail_url =self.start_urls[0]+site.select("dt[@class='video-title']/a/@href").extract()[0]
             request = Request(detail_url,callback=self.parse_detail)
             request.meta['item'] = item
@@ -40,12 +38,12 @@ class TvSpider(CrawlSpider):
         hxs = HtmlXPathSelector(response)
         item = response.meta['item']
         site = hxs.select("//div[@id='bd']")
-        video_list = site.select("dd[@id='tv-play']/div[@class='box']/div[1][@class='content']/div[@class='full clearfix']")
-        item['video_url'] = video_list.select("a/@href").extract() 
-        item['video_name'] = video_list.select("a/text()").extract() 
-        item['video_introduction'] =  video_list.select("a/text()").extract() 
+        video_list = site.select("//div[@class='content']/div[@class='content-bd gclearfix']/dl")
+        item['video_url'] = video_list.select("dd[@class='poster']/a[@class='play_btn']/@href").extract() 
+        item['video_name'] = video_list.select("dt/a/text()").extract() 
+        item['video_introduction'] =  video_list.select("dd[@class='poster']/a[@class='play_btn']/div[2]").extract() 
+        item['video_thumbnail'] = video_list.select("dd[@class='poster']/a[@class='play_btn']/img/@src").extract() 
         item['introduction'] = site.select("div[@class='span17']/div[@id='info']/div[2][@class='info-bd']/div[@class='intro gclearfix']/p[@id='part-intro']/text()").extract() 
-        item['video_thumbnail'] = site.select("dd[@class='v-poster']/a[@class='play_btn']/img/@src").extract() 
         item['thumbnail'] = site.select("div[@id='left_info']/div[@id='poster']/a[@class='play_btn']/img/@src").extract() 
         item['publish_time'] = ""        
         item['director'] = " ".join(site.select("div[@id='left_info']/div[@id='otherinfo']/p[2]/span[@class='text']/text()").extract()) 
@@ -53,4 +51,5 @@ class TvSpider(CrawlSpider):
         item['area'] = site.select("div[@id='left_info']/div[@id='otherinfo']/p[4]/span[@class='text']/text()").extract() 
         item['sec_classify_name'] = "".join(site.select("div[@id='left_info']/div[@id='otherinfo']/p[3]/span[@class='text']/text()").extract()) 
         item['video_view_cnt'] = 0 
+
         return item 
