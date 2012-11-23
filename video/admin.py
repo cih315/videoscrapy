@@ -1,12 +1,11 @@
-from video.models import MicroMovie,AreaDic
+from video.models import AreaDic
 from django.contrib import admin
 
-class AreaDicAdmin(admin.ModelAdmin):
-    search_fields = ['areaName']    
+#class AreaDicAdmin(admin.ModelAdmin):
+#    search_fields = ['areaName']    
 
-    list_display = ('id','areaName')
+#    list_display = ('id','areaName')
 
-    list_per_page = 10
+#    list_per_page = 10
  
-admin.site.register(MicroMovie)
-admin.site.register(AreaDic,AreaDicAdmin)
+#admin.site.register(AreaDic,AreaDicAdmin)
