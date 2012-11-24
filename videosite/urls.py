@@ -19,4 +19,6 @@ urlpatterns = patterns('',
     url(r'^js/(?P<path>.*)$', 'django.views.static.serve', {'document_root':os.path.dirname(globals()["__file__"]) + '/../bootstrap/js'}),
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^movie/(?P<cate>\w+)/$', 'video.views.cate'),
+
 )
