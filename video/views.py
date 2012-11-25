@@ -1,13 +1,13 @@
 # Create your views here.
 from django.shortcuts import render_to_response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger 
-from video.models import SeriesInfo, SecondClassify,VideoType
+from video.models import SeriesInfo, SecondClassify,VideoType,Classify,SecondClassify
 
 def home(request):
     series_list = SeriesInfo.objects.all()
     paginator = Paginator(series_list,12)
     page = request.GET.get("page")
-
+    cate_list = SecondClassify.objects.filter(classify__top_classify=1) 
     try:
         videos = paginator.page(page)
     except PageNotAnInteger:
@@ -15,31 +15,13 @@ def home(request):
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
 
-    return render_to_response('video/index.html',{'list':videos})
+    return render_to_response('video/index.html',{'list':videos,'cate_list':cate_list,'currcate':'all'})
                                                               
 def cate(request,cate):
-    secondClassify = SecondClassify.objects.get(pk=cate)
-    print(secondClassify.name)
-  
-    #sec_list = secondClassify.videotype_set.all() 
-    #sec_count = secondClassify.videotype_set.count() 
-    videotype = VideoType.objects.filter(sec_classify=secondClassify)
-    print(len(videotype))
-    series_ids = []
-    for video in videotype: 
-        series_ids.append(video.series_id)
-    print(series_ids)
-    series_list = SeriesInfo.objects.filter(id__in =series_ids)
-    print(series_list.count())
-    #series_list.videotype_set.all()
-    #series_list.videotype_set.all()
-    #sec_list.videotype_set.all()
-    #for sec in sec_list:
-        #print(sec.seriesinfo_set)
-    #VideoType.object.get()
-    #series_list.videotype_set.filter(sec_classify=)
+    series_list = SeriesInfo.objects.filter(videotype__sec_classify=cate)
     paginator = Paginator(series_list,12)
     page = request.GET.get("page")
+    cate_list = SecondClassify.objects.filter(classify__top_classify=1) 
 
     try:
         videos = paginator.page(page)
@@ -48,5 +30,4 @@ def cate(request,cate):
     except EmptyPage:
         videos = paginator.page(paginator.num_pages)
 
-
-    return render_to_response('video/index.html',{'list':videos})
+    return render_to_response('video/index.html',{'list':videos,'cate_list':cate_list,'currcate':cate})

@@ -50,6 +50,7 @@ class SeriesInfo(models.Model):
 
     class Meta:
         db_table = 'series_info'
+        ordering = ['sort_index']
 
 class VideoInfo(models.Model):
     series = models.ForeignKey(SeriesInfo)

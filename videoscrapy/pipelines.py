@@ -21,10 +21,12 @@ class MoviePipeline(object):
         area = self.area_list.get(pk=1) 
         try:
             if item['area_name']:
-                area = self.area_list.get(area_name=item['area_name'])
+               print(item['area_name'])
+               area = self.area_list.get(area_name=item['area_name'])
         except AreaDic.DoesNotExist:
-            area = self.area_list.get(pk=10)
-
+            area = self.area_list.get(pk=11)
+        
+        print(spider.name)
         top_classify = self.top_classify_list.get(spider_name=spider.name)        
 
         series, created = SeriesInfo.objects.get_or_create(name=item['name'],area=area,top_classify=top_classify)
@@ -49,7 +51,7 @@ class MoviePipeline(object):
 			  'website':spider.allowed_domains[0],'name':item['video_name'][i-1]})        
 
         for i,v in enumerate(item['sec_classify_name']): 
-            sec_classify_id,seccreated = self.sec_classify_list.get_or_create(name=item['sec_classify_name'][i])
+            sec_classify_id,seccreated = self.sec_classify_list.get(name=item['sec_classify_name'][i])
             VideoType.objects.get_or_create(series=series,sec_classify=sec_classify_id)
        
         return item 

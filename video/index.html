@@ -32,22 +32,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">WonTV</a>
+          <a class="brand" href="/">WonTV</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="#">电影频道</a></li>
-              <li><a href="#about">全球热剧</a></li>
-              <li><a href="#contact">微电影</a></li>
-              <li><a href="#contact">公开课</a></li>
-              <li><a href="#contact">综艺</a></li>
-              <li><a href="#contact">纪实记录</a></li>
+              <li><a href="#">全球热剧</a></li>
+              <li><a href="#">微电影</a></li>
+              <li><a href="#">公开课</a></li>
+              <li><a href="#">综艺</a></li>
+              <li><a href="#">纪实记录</a></li>
             </ul>
-           <!-- 
-            <form class="navbar-form pull-left">
-              <input  type="text" class="search-query span2" placeholder="Search">
-            </form>
-            </form>
-            -->
           </div><!--/.nav-collapse -->
         </div>
       </div>
@@ -55,49 +49,39 @@
 
     <div class="container">
 
-      <!-- Main hero unit for a primary marketing message or call to action -->
-        <!--
-        <h1>Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-large">Learn more »</a></p>
-        -->
         <ul class="breadcrumb">
-          <li class="active">全部 <span class="divider"> </span></li>
-          <li><a href="cate/101">喜剧</a><span class="divider"> </span></li>
-          <li><a href="cate/102">爱情</a><span class="divider"> </span></li>
-          <li><a href="#">动作</a><span class="divider"> </span></li>
-          <li><a href="#">恐怖</a><span class="divider"> </span></li>
-	  <li><a href="#">科幻</a><span class="divider"> </span></li>
-          <li><a href="#">剧情</a><span class="divider"> </span></li>
-          <li><a href="#">犯罪</a><span class="divider"> </span></li>
-          <li><a href="#">奇幻</a><span class="divider"> </span></li>
-          <li><a href="#">战争</a><span class="divider"> </span></li>
-          <li><a href="#">悬疑</a><span class="divider"> </span></li>
-          <li><a href="#">动画</a><span class="divider"> </span></li>
-          <li><a href="#">文艺</a><span class="divider"> </span></li>
-          <li><a href="#">伦理</a><span class="divider"> </span></li>
-          <li><a href="#">纪录</a><span class="divider"> </span></li>
-          <li><a href="#">传记</a><span class="divider"> </span></li>
-          <li><a href="#">歌舞</a><span class="divider"> </span></li>
-          <li><a href="#">古装</a><span class="divider"> </span></li>
-          <li><a href="#">历史</a><span class="divider"> </span></li>
-          <li><a href="#">惊悚</a><span class="divider"> </span></li>
-          <li><a href="#">其他</a><span class="divider"> </span></li>
-        </ul>
+          {% if cate_list%}
 
-        <section>
-          <ul class="thumbnails">
+          {% ifequal currcate "all" %}
+           <li><a class="active" >全部</a><span class="divider"></span></li>
+          {% else%}
+           <li><a href="/">全部<span class="divider"></span></a></li>
+          {% endifequal %}
+         
+          {% for cate in cate_list  %}
+          {% ifequal currcate cate.id|slugify %}
+           <li><a  class="active" href="/movie/{{cate.id}}">{{cate.name}}</a><span class="divider"> </span></li>
+          {% else %}
+           <li><a href="/movie/{{cate.id}}">{{cate.name}}</a><span class="divider"> </span></li>
+          {% endifequal %}
+          {% endfor  %}
+
+          {% endif %}
+        </ul>
+        {% comment %}
+        <span class="label">共有{{list.paginator.count}}部电影</span>
+        {% endcomment %}
+
+        <ul class="thumbnails">
               {% if list %}
                   {% for video in list %}
               <li class="span2">
                 <div class="thumbnail">
                   <img  src="{{video.thumbnail}}" alt="{{video.name}}">
                   <div class="caption">
-                    {% comment %}
                     <h3>{{video.name}}</h3>
                     <p>导演：{{video.director}}</p>
                     <p>主演：{{video.actors}}</p>
-                    {% endcomment %}
                   </div>
                 </div>
               </li>
@@ -120,7 +104,6 @@
                  {% endif  %}
                </ul>
           </div>
-       <section>
 
       <hr>
 
