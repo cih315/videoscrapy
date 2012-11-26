@@ -4,6 +4,7 @@
 # See: http://doc.scrapy.org/topics/item-pipeline.html
 # -*- coding: utf-8 -*- 
 from video.models import *
+from scrapy.exceptions import DropItem
 
 class VideoscrapyPipeline(object):
     def process_item(self, item, spider):
@@ -17,16 +18,18 @@ class MoviePipeline(object):
         self.area_list = AreaDic.objects.all()    
 
     def process_item(self, item, spider):
+        if len(item['video_url']) == 0:
+            raise DropItem("Missing the deatil video %s" % item)
 
         area = self.area_list.get(pk=1) 
         try:
             if item['area_name']:
-               print(item['area_name'])
+               #print(item['area_name'])
                area = self.area_list.get(area_name=item['area_name'])
         except AreaDic.DoesNotExist:
-            area = self.area_list.get(pk=11)
+            area = self.area_list.get(pk=10)
         
-        print(spider.name)
+        #print(spider.name)
         top_classify = self.top_classify_list.get(spider_name=spider.name)        
 
         series, created = SeriesInfo.objects.get_or_create(name=item['name'],area=area,top_classify=top_classify)
@@ -42,16 +45,15 @@ class MoviePipeline(object):
         series.save()
 
         for i,v in enumerate(item['video_url']):
-            cnt = 0
-            if len(item['video_view_cnt']) > 0:
-                cnt = item['video_view_cnt'][i]
-            series.videoinfo_set.get_or_create(url=item['video_url'][i-1],
-		defaults={'thumbnail':item['video_thumbnail'][i-1],
-			  'view_cnt':cnt,'introduction':item['video_introduction'][i-1],
-			  'website':spider.allowed_domains[0],'name':item['video_name'][i-1]})        
+            i = i - 1
+            series.videoinfo_set.get_or_create(url=item['video_url'][i],
+		defaults={'thumbnail':item['video_thumbnail'][i],
+			  'view_cnt':item['video_view_cnt'][i],'introduction':item['video_introduction'][i],
+			  'website':spider.allowed_domains[0],'name':item['video_name'][i],
+                          'sort_index':item['video_sort_index'][i]})        
 
         for i,v in enumerate(item['sec_classify_name']): 
-            sec_classify_id,seccreated = self.sec_classify_list.get(name=item['sec_classify_name'][i])
+            sec_classify_id,seccreated = self.sec_classify_list.get_or_create(name=v)
             VideoType.objects.get_or_create(series=series,sec_classify=sec_classify_id)
        
         return item 

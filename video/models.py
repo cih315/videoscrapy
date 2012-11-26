@@ -60,9 +60,11 @@ class VideoInfo(models.Model):
     url = models.CharField(max_length=128)
     website = models.CharField(max_length=64)
     view_cnt = models.IntegerField(default=0)
+    sort_index = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'video_info'
+        ordering = ['sort_index']
 
 class VideoType(models.Model):
     series = models.ForeignKey(SeriesInfo)

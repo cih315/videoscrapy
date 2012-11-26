@@ -60,7 +60,8 @@ class MySpider(CrawlSpider):
         item['video_name'] = site.select("dd[@class='v-title']/span[@id='film_name']/text()").extract() 
         item['video_thumbnail'] = site.select("dd[@class='v-poster']/a[@class='play_btn']/img/@src").extract() 
         item['video_introduction'] = site.select("dd[@class='v-main-info clearfix']/p[@class='intro']/span[1][@class='text']/text()").extract() 
-        item['video_view_cnt'] = [] 
+        item['video_view_cnt'] = [0] 
+        item['video_sort_index'] = [0]
         item['sec_classify_name'] = classify_list 
         item['introduction'] = site.select("dd[@class='v-main-info clearfix']/p[@class='intro']/span[1][@class='text']/text()").extract()[0].strip() 
         item['thumbnail'] =  site.select("dd[@class='v-poster']/a[@class='play_btn']/img/@src").extract()[0].strip() 

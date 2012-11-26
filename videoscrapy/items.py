@@ -31,6 +31,7 @@ class VideoItem(BaseVideoItem):
     video_url = Field() 
     video_website = Field() 
     video_view_cnt = Field() 
+    video_sort_index = Field() 
 
     
     

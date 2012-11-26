@@ -3,6 +3,7 @@ from scrapy.selector import HtmlXPathSelector
 from scrapy.spider import BaseSpider
 from scrapy.http import Request
 from videoscrapy.items import VideoItem 
+import re
 
 
 class MySpider(BaseSpider):
@@ -10,7 +11,7 @@ class MySpider(BaseSpider):
     allowed_domains = ['sohu.com']
     start_urls = [
         'http://so.tv.sohu.com/list_p1101_p2_p3_u5185_u5730_p42012_p5_p6_p73_p82_p9-1_p101_p11.html',#leidi
-        'http://so.tv.sohu.com/list_p1101_p2_p3_u6e2f_u5267_p42012_p5_p6_p73_p82_p9-1_p101_p11.html',#hk
+       # 'http://so.tv.sohu.com/list_p1101_p2_p3_u6e2f_u5267_p42012_p5_p6_p73_p82_p9-1_p101_p11.html',#hk
     ]
   
     def __init__(self):
@@ -47,16 +48,22 @@ class MySpider(BaseSpider):
 
         for link in hxs.select("//div[@id='contentA']/div[@class='right']/div[@class='jumpB clear']/a[@class='pa']/@href").extract():
             url = "http://so.tv.sohu.com" + link
-            yield Request(url,callback=self.parse)
+            #url = "http://so.tv.sohu.com" + link.select("@href").extract()[0]
+            if (url in self.start_urls) == False:
+                yield Request(url,callback=self.parse)
 
 
     def parse_detail(self,response):
         hxs = HtmlXPathSelector(response)
         self.log("the detail url is"+response.url)
+        site = hxs.select("//div[@id='list_desc']/div[@class='pp similarLists']/ul/li/span")
         item = response.meta['item']
         item['sec_classify'] = ",".join(hxs.select("//div[@id='contentA' and @class='area']/div[@class='right']/div[@class='blockRA bord clear']/div[@class='cont']/p[4]/a/text()").extract()) 
-        item['video_name'] =[] 
-        item['video_url'] =[] 
-        item['video_introduction'] =[] 
-        item['video_view_cnt'] =[] 
+        item['video_name'] = site.select("strong/a/text()").extract()
+        item['video_url'] = site.select("strong/a/@href").extract() 
+        item['video_thumbnail'] = ['']*len(item['video_url']) 
+        item['video_introduction'] = ['']*len(item['video_url']) 
+        item['video_sort_index'] = range(1,len(item['video_url'])+1) 
+        item['video_view_cnt'] = [0]*len(item['video_url']) 
+
         yield item
