@@ -15,5 +15,10 @@ ITEM_PIPELINES = [
     'videoscrapy.pipelines.MoviePipeline',
 ]
 
+DOWNLOADER_MIDDLEWARES = {
+   # 'videoscrapy.middlewares.WebkitDownloader': 1000,
+}
+import os
+os.environ["DISPLAY"] = ":0"
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; rv:16.0) Gecko/20100101 Firefox/16.0'

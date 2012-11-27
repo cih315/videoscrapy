@@ -11,7 +11,11 @@ class MySpider(BaseSpider):
     allowed_domains = ['sohu.com']
     start_urls = [
         'http://so.tv.sohu.com/list_p1101_p2_p3_u5185_u5730_p42012_p5_p6_p73_p82_p9-1_p101_p11.html',#leidi
-       # 'http://so.tv.sohu.com/list_p1101_p2_p3_u6e2f_u5267_p42012_p5_p6_p73_p82_p9-1_p101_p11.html',#hk
+        'http://so.tv.sohu.com/list_p1101_p2_p3_u6e2f_u5267_p42012_p5_p6_p73_p82_p9-1_p101_p11.html',#hk
+        'http://so.tv.sohu.com/list_p1101_p2_p3_u7f8e_u5267_p4-1_p5_p6_p70_p80_p9-1_p101_p11.html',#usa
+        'http://so.tv.sohu.com/list_p1101_p2_p3_u97e9_u5267_p4-1_p5_p6_p70_p82_p9-1_p101_p11.html',#hang
+        'http://so.tv.sohu.com/list_p1101_p2_p3_u6cf0_u5267_p4-1_p5_p6_p70_p80_p9-1_p101_p11.html',#tai
+        'http://so.tv.sohu.com/list_p1101_p2_p3_u82f1_u56fd_p4-1_p5_p6_p70_p80_p9-1_p101_p11.html',#yingou
     ]
   
     def __init__(self):
@@ -21,11 +25,17 @@ class MySpider(BaseSpider):
         hxs = HtmlXPathSelector(response)
         sites = hxs.select("//div[@id='videoData']/div[@class='vData clear']/div[@class='vInfo']")
         varea= hxs.select("//div[@id='seaKey' and @class='seaKey bord clear']/ul[3]/li[@class='now']/a/text()").extract()[0]
-        if varea == u'\u5185\u5730':
-            varea = u'\u5927\u9646'
-        if varea == u'\u6e2f\u5267':
-            varea = u'\u9999\u6e2f'
-           
+
+        area_dic = {
+            u'\u5185\u5730':u'\u5927\u9646',
+            u'\u6e2f\u5267':u'\u9999\u6e2f',
+            u'\u7f8e\u5267':u'\u7f8e\u56fd',
+            u'\u97e9\u5267':u'\u97e9\u56fd',
+            u'\u6cf0\u5267':u'\u6cf0\u56fd',
+            u'\u82f1\u5267':u'\u82f1\u56fd'
+        }  
+        varea = area_dic[varea]
+
         for site in sites:
             item = VideoItem()
             item['area_name'] = varea 
