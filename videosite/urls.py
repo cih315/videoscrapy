@@ -20,5 +20,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^movie/(?P<cate>\d+)/$', 'video.views.cate'),
+    url(r'^shows/', 'video.views.getshow'),
+    url(r'^shows/?P<cate>\d+/$', 'video.views.getShowByCate'),
 
 )

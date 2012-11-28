@@ -26,17 +26,13 @@ class ShowsHaoSpider(BaseSpider):
 
         for site in sites:
             item = VideoItem()
-            item['area_name'] = "".join(site.select("a/@d-area").extract()).replace("-%C4%DA%B5%D8","").strip() 
+            item['area_name'] = re.sub("[\w\s]+","",site.select("a/@d-area").extract()[0]).replace("%","").replace("-","").strip() 
             item['name'] = "".join(site.select("a/@d-title").extract())
             item['introduction'] = "".join(site.select("a/@d-intro").extract())
             item['thumbnail'] = "".join(site.select("a/img/@src").extract())
-            sec_list = []
-            for sec in site.select("a/@d-type").extract():
-                sec = sec.replace("-%D7%DB%D2%D5","").replace("-%B7%C3%CC%B8","").replace("-%D3%CE%CF%B7%BB%A5%B6%AF","").replace("-%D1%A1%D0%E3","").replace("-%C7%FA%D2%D5","").replace("\t","").strip()
-                sec_list.append(sec)
-
-            item['sec_classify_name'] = sec_list 
-            item['sec_classify'] = ",".join(sec_list)
+            sec = "".join(re.sub("[\w\s]+","",site.select("a/@d-type").extract()[0])).replace("%","").replace("-","").strip()
+            item['sec_classify_name'] = sec.split(",") 
+            item['sec_classify'] = sec 
             item['director'] = ",".join(site.select("div[@class='v-desc']/dl/dd[@class='v-s-actor']/a/text()").extract())
             item['actors'] = "" 
             item['score'] = "" 
@@ -48,8 +44,8 @@ class ShowsHaoSpider(BaseSpider):
             request = Request(detail_url,callback=self.parse_detail)
             request.meta['item'] = item
             item['video_url'] = [] 
-            #yield request 
-            yield item 
+            yield request 
+            #yield item 
 
         for link in hxs.select("//div[@class='page-navgation']/a[last()]/@href").extract():
             url = "http://video.hao123.com" + link
@@ -61,12 +57,11 @@ class ShowsHaoSpider(BaseSpider):
         self.log("the detail url is"+response.url)
         site = hxs.select("//div[@id='list_desc']/div[@class='pp similarLists']/ul/li/span")
         item = response.meta['item']
-        #item['introduction'] = "".join(hxs.select("//input[@id='vblong']/@value").extract())
-       # item['sec_classify'] = ",".join(hxs.select("//div[@id='contentA' and @class='area']/div[@class='right']/div[@class='blockRA bord clear']/div[@class='cont']/p[4]/a/text()").extract()) 
-        item['video_url'] = [] 
-        #item['video_thumbnail'] = ['']*len(item['video_url']) 
-        #item['video_introduction'] = ['']*len(item['video_url']) 
-        #item['video_sort_index'] = range(1,len(item['video_url'])+1) 
-        #item['video_view_cnt'] = [0]*len(item['video_url']) 
+        item['video_url'] = hxs.select("//div[@id='VideoPcTVMenu']/div[@class='keysC']/a/@data-href").extract()
+        item['video_name'] = hxs.select("//div[@id='VideoPcTVMenu']/div[@class='keysC']/a/text()").extract()
+        item['video_thumbnail'] = ['']*len(item['video_url']) 
+        item['video_introduction'] = ['']*len(item['video_url'])
+        item['video_sort_index'] = range(1,len(item['video_url'])+1) 
+        item['video_view_cnt'] = [0]*len(item['video_url']) 
 
         yield item

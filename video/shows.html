@@ -39,7 +39,7 @@
               <li><a href="#">全球热剧</a></li>
               <li><a href="#">微电影</a></li>
               <li><a href="#">公开课</a></li>
-              <li><a href="/shows">综艺</a></li>
+              <li><a href="#">综艺</a></li>
               <li><a href="#">纪实记录</a></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -60,15 +60,14 @@
          
           {% for cate in cate_list  %}
           {% ifequal currcate cate.id|slugify %}
-           <li><a  class="active" href="/movie/{{cate.id}}">{{cate.name}}</a><span class="divider"> </span></li>
+           <li><a  class="active" href="/shows/{{cate.id}}">{{cate.name}}</a><span class="divider"> </span></li>
           {% else %}
-           <li><a href="/movie/{{cate.id}}">{{cate.name}}</a><span class="divider"> </span></li>
+           <li><a href="/shows/{{cate.id}}">{{cate.name}}</a><span class="divider"> </span></li>
           {% endifequal %}
           {% endfor  %}
-
           {% endif %}
         </ul>
-        <span class="label">共有{{list.paginator.count}}部电影</span>
+        <span class="label">共有{{list.paginator.count}}部综艺</span>
 
         <ul class="thumbnails">
               {% if list %}

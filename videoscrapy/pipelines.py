@@ -18,8 +18,8 @@ class MoviePipeline(object):
         self.area_list = AreaDic.objects.all()    
 
     def process_item(self, item, spider):
-        #if len(item['video_url']) == 0:
-        #    raise DropItem("Missing the deatil video %s" % item)
+        if len(item['video_url']) == 0:
+            raise DropItem("Missing the deatil video %s" % item)
 
         area,areaCreated = self.area_list.get_or_create(area_name=item['area_name'])
         top_classify = self.top_classify_list.get(spider_name=spider.name)        
@@ -36,11 +36,10 @@ class MoviePipeline(object):
 	series.sort_index=item['sort_index'] 
         series.save()
 
-        if len(item['video_url']):
-            for i,v in enumerate(item['video_url']):
-                i = i - 1
-                series.videoinfo_set.get_or_create(url=item['video_url'][i],
-		defaults={'thumbnail':item['video_thumbnail'][i],
+        for i in range(len(item['video_url'])):
+            #i = i - 1
+            series.videoinfo_set.get_or_create(url=item['video_url'][i],
+            defaults={'thumbnail':item['video_thumbnail'][i],
 			  'view_cnt':item['video_view_cnt'][i],'introduction':item['video_introduction'][i],
 			  'website':spider.allowed_domains[0],'name':item['video_name'][i],
                           'sort_index':item['video_sort_index'][i]})        
