@@ -16,7 +16,7 @@ ITEM_PIPELINES = [
 ]
 
 DOWNLOADER_MIDDLEWARES = {
-   'videoscrapy.middlewares.WebkitDownloader': 1000,
+   #'videoscrapy.middlewares.WebkitDownloader': 1000,
 }
 import os
 os.environ["DISPLAY"] = ":0"
