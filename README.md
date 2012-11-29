@@ -1,23 +1,24 @@
-_Now updated for Django 1.4.1 and Bootstrap 2.1_
-
-Django Twitter Bootstrap
+django-admin-bootstrapped
 =========================
-The goal of Django Twitter Bootstrap is quite simple - provide a base Django project which handles the build process of Twitter Bootstrap 2.1 via django-compress.  Basically, using this template, it will be easy to see how you can include more LESS files (and even coffeescript) and have Django build (and with DEBUG = False, concat and compress) these files for production use.
 
-Requirements
-------------
-You must have lessc and node globally accessible. On OSX, I used Macports to install node, added a symbolic link to /usr/bin/node and then used Node Package Manager (npm) to install lessc via the following:
-    
-    npm install --global less
+A Django admin theme using Twitter Bootstrap. It doesn't need any kind of modification on your side, just add it to the installed apps.
 
-If you can run the test pages (no syncdb required), then you're golden.
+## Screenshots
 
-Updates
--------
-I will keep an eye on Twitter Bootstrap and update my code as necessary. If I'm behind, let me know!
+<img src="http://www.codingnot.es/static/screens/django_admin_bootstrapped_screen_0.png">
+<img src="http://www.codingnot.es/static/screens/django_admin_bootstrapped_screen_1.png">
+<img src="http://www.codingnot.es/static/screens/django_admin_bootstrapped_screen_2.png">
 
-I Need Help With...
---------------------
-I would love for someone to help me standardize this project a little further. Ideally without too many more requirements, better logging and media support would be great settings for a starter project like this!
+## Requirements
 
-Enjoy!
+* Django `1.4.x`.
+
+## Installation
+
+1. Download it from PyPi with `pip install django-admin-bootstrapped`
+2. Add `'django_admin_bootstrapped'` into the `INSTALLED_APPS` list __before__ `'django.contrib.admin'`
+3. Have fun!
+
+## Goodies
+
+TODO
