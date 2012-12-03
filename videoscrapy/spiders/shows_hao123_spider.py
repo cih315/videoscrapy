@@ -5,10 +5,10 @@ from scrapy.http import Request
 from videoscrapy.items import VideoItem 
 import re
 
-from selenium import selenium
+#from selenium import selenium
 import time
-from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
-from selenium import webdriver
+#from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
+#from selenium import webdriver
 
 class ShowsHaoSpider(BaseSpider):
     name = 'shows_hao123'
@@ -44,8 +44,8 @@ class ShowsHaoSpider(BaseSpider):
             request = Request(detail_url,callback=self.parse_detail)
             request.meta['item'] = item
             item['video_url'] = [] 
-            yield request 
-            #yield item 
+            #yield request 
+            yield item 
 
         for link in hxs.select("//div[@class='page-navgation']/a[last()]/@href").extract():
             url = "http://video.hao123.com" + link

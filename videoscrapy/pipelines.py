@@ -21,6 +21,10 @@ class MoviePipeline(object):
         if len(item['video_url']) == 0:
             raise DropItem("Missing the deatil video %s" % item)
 
+        if len(item['sec_classify_name']) == 0:
+            raise DropItem("Missing the deatil video %s" % item)
+          
+
         area,areaCreated = self.area_list.get_or_create(area_name=item['area_name'])
         top_classify = self.top_classify_list.get(spider_name=spider.name)        
 
