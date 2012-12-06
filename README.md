@@ -1,12 +1,12 @@
 django-admin-bootstrapped
 =========================
 
-A Django admin theme using Twitter Bootstrap. It doesn't need any kind of modification on your side, just add it to the installed apps.
-
+国内视爬虫
 
 ## Requirements
 
 * Django `1.4.x`.
+* Scrapy `Scrapy 0.16`.
 
 ## Installation
 
