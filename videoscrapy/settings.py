@@ -12,7 +12,7 @@ SPIDER_MODULES = ['videoscrapy.spiders']
 NEWSPIDER_MODULE = 'videoscrapy.spiders'
 
 ITEM_PIPELINES = [
-    'videoscrapy.pipelines.MoviePipeline',
+    #'videoscrapy.pipelines.MoviePipeline',
 ]
 
 DOWNLOADER_MIDDLEWARES = {
