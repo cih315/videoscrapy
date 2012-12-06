@@ -1,7 +1,7 @@
-django-admin-bootstrapped
+videoscapy
 =========================
 
-国内视爬虫
+国内视频爬虫
 
 ## Requirements
 
@@ -10,8 +10,10 @@ django-admin-bootstrapped
 
 ## Installation
 
-1. Download it from PyPi with `pip install django-admin-bootstrapped`
-2. Add `'django_admin_bootstrapped'` into the `INSTALLED_APPS` list __before__ `'django.contrib.admin'`
+1. Download it from PyPi with `pip install Scrapy`
+2. tar xzvf Django-1.4.2.tar.gz
+cd Django-1.4.2
+sudo python setup.py install
 3. Have fun!
 
 ## Goodies
